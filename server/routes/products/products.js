@@ -1,4 +1,5 @@
 var Product = require('../../db/product/product.js');
+var User = require('../../db/user/user.js');
 var express = require('express');
 var expressJwt = require('express-jwt');
 var router = express.Router();
@@ -39,22 +40,26 @@ router.post('/', expressJwt({secret: secret}) ,function(req, res){
   });
 
   newProduct.save()
-  .then(User.findOne({username: prod.author}))
+  .then(function(){
+    console.log("#1 ", newProduct.author);
+    return User.findOne({username: newProduct.author});
+  })
   .then(function (user) {
-    user.shareHist.push(newProduct)
-    .save()
+    console.log("#2 ", user);
+    if(user.shareHist === undefined){
+      user.shareHist = [];
+    }
+    user.shareHist.push(newProduct);
+    user.save()
     .then(function (doc) {
      res.send(doc);
-    })
-    .catch(function (err) {
-       console.log(err);
-       res.status(404).send('DatabaseError');
     });
-// followed example from: http://www.jonahnisenson.com/tips-on-working-with-embedded-arrays-in-mongoosemongo/
-// Can this be tagged on after the a response is already sent (line 46)?\
-  });
+  })
+  .catch(function (err) {
+   console.log(err);
+   res.status(404).send('DatabaseError');
+  });  
 });
-
 /**
  *  Request Handler for PUT(update) Method with JWT verification middleware
  *  @expected data with Req - 1. ObjectId as parameter(req.params.id)
