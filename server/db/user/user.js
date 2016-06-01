@@ -27,9 +27,10 @@ var UserSchema = new Schema({
   },
 // by setting a property equal to a schema, it is saved as an empty array
 // https://github.com/Automattic/mongoose/issues/1335
-  shareHist: Product.schema,
+  shareHist: [],
   cardInfo: Object
 });
+
 
 UserSchema.methods = {
 

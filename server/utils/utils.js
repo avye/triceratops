@@ -30,6 +30,7 @@ exports.getCleanUser = function(user){
   return {
     username: user.username,
     displayName: user.displayName,
-    email: user.email
+    email: user.email,
+    shareHist: user.shareHist
   };
 };

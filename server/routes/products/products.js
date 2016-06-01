@@ -41,18 +41,18 @@ router.post('/', expressJwt({secret: secret}) ,function(req, res){
   newProduct.save()
   .then(User.findOne({username: prod.author}))
   .then(function (user) {
-    user.shareHist.push(newProduct);
-    user.save();
-  })
-  .then(function (doc) {
+    user.shareHist.push(newProduct)
+    .save()
+    .then(function (doc) {
      res.send(doc);
- })
-  .catch(function (err) {
-     console.log(err);
-     res.status(404).send('DatabaseError');
-  });
+    })
+    .catch(function (err) {
+       console.log(err);
+       res.status(404).send('DatabaseError');
+    });
 // followed example from: http://www.jonahnisenson.com/tips-on-working-with-embedded-arrays-in-mongoosemongo/
 // Can this be tagged on after the a response is already sent (line 46)?\
+  });
 });
 
 /**
