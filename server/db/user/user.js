@@ -1,6 +1,7 @@
 var mongoose = require('../db.js');
 var bcrypt = require('bcrypt');
 var Promise = require('bluebird');
+var Product = require('../product/product.js');
 
 var Schema = mongoose.Schema;
 var saltRounds = 10;
@@ -24,6 +25,9 @@ var UserSchema = new Schema({
     type: String,
     required: true
   },
+// by setting a property equal to a schema, it is saved as an empty array
+// https://github.com/Automattic/mongoose/issues/1335
+  shareHist: Product.schema,
   cardInfo: Object
 });
 
